@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:gfe="http://www.springframework.org/schema/gemfire" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<context:annotation-config />
+
+	<context:property-placeholder location="classpath:region-sizer.properties" />
+
+	<gfe:client-cache id="cache" pool-name="pool"
+		pdx-read-serialized="${region-sizer.client-read-pdx-serialized}"
+		properties-ref="gemfireProperties" />
+
+	<gfe:pool id="pool" read-timeout="${region-sizer.client-read-timeout}"
+		retry-attempts="${region-sizer.client-retry-attempts}">
+		<gfe:locator host="${region-sizer.client-locator-host-1}"
+			port="${region-sizer.client-locator-port-1}" />
+		<gfe:locator host="${region-sizer.client-locator-host-2}"
+			port="${region-sizer.client-locator-port-2}" />
+	</gfe:pool>
+
+	<gfe:client-region id="" pool-name="pool"
+		shortcut="PROXY" cache-ref="cache" />
+
+	<gfe:client-region id="" pool-name="pool"
+		shortcut="PROXY" cache-ref="cache" />
+
+	<gfe:client-region id="" pool-name="pool"
+		shortcut="PROXY" cache-ref="cache" />
+
+	<gfe:client-region id="" pool-name="pool"
+		shortcut="PROXY" cache-ref="cache" />
+
+	<gfe:client-region id="" pool-name="pool"
+		shortcut="PROXY" cache-ref="cache" />
+
+	<util:properties id="gemfireProperties">
+		<prop key="log-file">${region-sizer.gemfire-log-file}</prop>
+	</util:properties>
+
+</beans>

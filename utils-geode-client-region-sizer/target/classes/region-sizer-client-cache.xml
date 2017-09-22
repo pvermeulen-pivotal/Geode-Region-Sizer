@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<client-cache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://geode.apache.org/schema/cache"
+	xsi:schemaLocation="http://geode.apache.org/schema/cache http://geode.apache.org/schema/cache/cache-1.0.xsd"
+	version="1.0" copy-on-read="true">
+
+	<pool name="pool" read-timeout="10000" retry-attempts="-1">
+		<locator host="" port="" />
+		<locator host="" port="" />
+	</pool>
+
+	<pdx read-serialized="true" />
+
+	<region name="" refid="PROXY">
+		<region-attributes pool-name="pool" />
+	</region>
+
+	<region name="" refid="PROXY">
+		<region-attributes pool-name="pool" />
+	</region>
+
+	<region name="" refid="PROXY">
+		<region-attributes pool-name="pool" />
+	</region>
+
+	<region name="" refid="PROXY">
+		<region-attributes pool-name="pool" />
+	</region>
+
+</client-cache>
