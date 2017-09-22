@@ -33,12 +33,11 @@ public class ClientRegionSizer {
 	private boolean needRunDatePrinted = true;
 	private boolean needCSVHeaderPrinted = true;
 
-	public void getRegionSize(Region<?, ?> region, int records, boolean needDetail, boolean needCsv,
-			String contextName) {
+	public void getRegionSize(Region<?, ?> region, SizerInput si) {
 		Execution exec = null;
 		ResultCollector<?, ?> rc = null;
 		Serializable[] functionArgs = new Serializable[1];
-		functionArgs[0] = records;
+		functionArgs[0] = si.getNumberRecords();
 
 		try {
 			exec = FunctionService.onRegion(region).setArguments(functionArgs)
@@ -50,26 +49,30 @@ public class ClientRegionSizer {
 
 			result = resize(result);
 
-			if (detailWriter != null)
-				getSummary(result, contextName);
+			if (si.getOutputWriter() != null)
+				getSummary(result, si);
 
-			if (detailWriter != null)
-				getDetail(result, needDetail);
+			if (si.getOutputWriter() != null)
+				getDetail(result, si);
 
-			if ((needCsv) || (csvWriter != null))
-				getCsv(result);
+			if ((si.isCsv()) || (si.getCsvWriter() != null))
+				getCsv(result, si);
 
 		} catch (GemFireException ex) {
 			logger.error(ex.getMessage());
 		}
 	}
 
-	private void getSummary(SizerResult result, String contextName) {
+	private void getSummary(SizerResult result, SizerInput si) {
 		try {
 			if (needRunDatePrinted) {
 				needRunDatePrinted = false;
-				detailWriter.write("Run Date: " + new Date() + "\n\n");
-				detailWriter.write("Spring Context: " + contextName + "\n\n");
+				si.getOutputWriter().write("Run Date: " + new Date() + "\n\n");
+				if (si.isSpring()) {
+					si.getOutputWriter().write("Spring Context: " + si.getOutputFileName() + "\n\n");
+				} else {
+					si.getOutputWriter().write("GemFire XML: " + si.getOutputFileName() + "\n\n");
+				}
 
 			}
 		} catch (IOException ex) {
@@ -110,8 +113,8 @@ public class ClientRegionSizer {
 		str.append(result.getLargestHistogram() + "\n\n");
 		str.append("----------------------------------------------\n\n");
 		try {
-			detailWriter.write(str.toString());
-			detailWriter.flush();
+			si.getOutputWriter().write(str.toString());
+			si.getOutputWriter().flush();
 		} catch (IOException ex) {
 			logger.error(ex.getMessage());
 		} finally {
@@ -119,7 +122,7 @@ public class ClientRegionSizer {
 		}
 	}
 
-	private void getDetail(SizerResult result, boolean needDetail) {
+	private void getDetail(SizerResult result, SizerInput si) {		
 		for (SizerResult sResult : result.getMemberResults()) {
 			StringBuilder str = new StringBuilder();
 			// detail member/region info
@@ -153,7 +156,7 @@ public class ClientRegionSizer {
 				str.append("  Avg Value Size [Serialized]:     0\n");
 				str.append("  Avg Value Size [Deserialized]:   0\n\n");
 			}
-			if (needDetail) {
+			if (si.isDetail()) {
 				// entry detail
 				for (SizerResultDetail detail : sResult.getRegionDetail()) {
 					str.append("    Region Entry - Key: " + detail.getKey() + "\n");
@@ -166,8 +169,8 @@ public class ClientRegionSizer {
 			}
 			str.append("----------------------------------------------\n\n");
 			try {
-				detailWriter.write(str.toString());
-				detailWriter.flush();
+				si.getOutputWriter().write(str.toString());
+				si.getOutputWriter().flush();
 			} catch (IOException ex) {
 				logger.error(ex.getMessage());
 			} finally {
@@ -176,17 +179,17 @@ public class ClientRegionSizer {
 		}
 	}
 
-	private void getCsv(SizerResult result) {
+	private void getCsv(SizerResult result, SizerInput si) {
 		Date date = new Date();
 		try {
 			if (needCSVHeaderPrinted) {
 				needCSVHeaderPrinted = false;
-				csvWriter.write("Region Name," + "Region Type," + "Number of Objects," + "Object Size," + "Key Size,"
+				si.getCsvWriter().write("Region Name," + "Region Type," + "Number of Objects," + "Object Size," + "Key Size,"
 						+ "Run Date\n");
 			}
-			csvWriter.write(result.getRegionName() + "," + result.getRegionType() + "," + result.getRegionSize() + ","
+			si.getCsvWriter().write(result.getRegionName() + "," + result.getRegionType() + "," + result.getRegionSize() + ","
 					+ result.getAverageValueSizeSerialized() + "," + result.getAverageKeySize() + "," + date + "\n");
-			csvWriter.flush();
+			si.getCsvWriter().flush();
 		} catch (IOException ex) {
 			logger.error(ex.getMessage());
 		}
@@ -273,7 +276,7 @@ public class ClientRegionSizer {
 			System.out.println("Started processing region:   " + name + " Start time: " + new Date(start)
 					+ " records selected=" + si.getNumberRecords());
 			Region<?, ?> region = cache.getRegion(name);
-			this.getRegionSize(region, si.getNumberRecords(), si.isDetail(), si.isCsv(), si.getInputFileName());
+			this.getRegionSize(region, si);
 			long end = System.currentTimeMillis();
 			System.out.println("Completed processing region: " + name + " region - End Time: " + new Date()
 					+ " - Elapsed time: " + (end - start) + "ms");
@@ -292,7 +295,7 @@ public class ClientRegionSizer {
 
 	private void processXML(SizerInput si) throws Exception {
 		ClientCacheFactory ccf = new ClientCacheFactory();
-		ClientCache cache = ccf.set("cache-xml", si.getInputFileName()).create();
+		ClientCache cache = ccf.set("cache-xml-file", si.getInputFileName()).create();
 
 		if (cache == null) {
 			throw new RuntimeException("No/Invalid geode clinet cache xml provided");
@@ -304,7 +307,7 @@ public class ClientRegionSizer {
 			long start = System.currentTimeMillis();
 			System.out.println("Started processing region:   " + region.getName() + " Start time: " + new Date(start)
 					+ " records selected=" + si.getNumberRecords());
-			this.getRegionSize(region, si.getNumberRecords(), si.isDetail(), si.isCsv(), si.getInputFileName());
+			this.getRegionSize(region, si);
 			long end = System.currentTimeMillis();
 			System.out.println("Completed processing region: " + region.getName() + " region - End Time: " + new Date()
 					+ " - Elapsed time: " + (end - start) + "ms");
@@ -327,10 +330,10 @@ public class ClientRegionSizer {
 		if ((args == null) || (args.length < 2)) {
 			throw new RuntimeException(
 					"Argument[1] (xml={client cache xml}) or (spring={spring context file name}) [required]\n"
-							+ "Argument[2] file={summary/detail file name [required]}\n"
+							+ "Argument[2] outputfile={summary/detail file name [required]}\n"
 							+ "Argument[3] records={numbers records to sample/0 for all}\n"
 							+ "Argument[4] detail={true/false} [detail report]\n"
-							+ "Argument[5] csv={csv file name for sizing}\n");
+							+ "Argument[5] csvfile={csv file name for sizing}\n");
 		}
 
 		try {

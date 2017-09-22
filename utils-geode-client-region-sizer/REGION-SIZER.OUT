@@ -1,0 +1,167 @@
+Run Date: Fri Sep 22 18:16:04 EDT 2017
+
+GemFire XML: REGION-SIZER.OUT
+
+Region Summary
+--------------
+Region Name: order
+Region Type: Partitioned
+Region Size: 1
+Sample Size: 1
+
+Total Entry Size:                384
+Total Key Size:                  80
+Total Value Size [Serialized]:   128
+Total Value Size [Deserialized]: 2832
+Avg Entry Size:                  384
+Avg Key Size:                    80
+Avg Value Size [Serialized]:     128
+Avg Value Size [Deserialized]:   2832
+
+
+Largest Histogram Object Size:   0
+Largest Histogram:               
+null
+
+----------------------------------------------
+
+Region Detail - Member server1
+------------------------------
+  Region Name: order
+  Region Type: Partitioned
+  Region Size: 1
+  Sample Size: 1
+
+  Total Entry Size:                384
+  Total Key Size:                  80
+  Total Value Size [Serialized]:   128
+  Total Value Size [Deserialized]: 2832
+  Avg Entry Size:                  384
+  Avg Key Size:                    80
+  Avg Value Size [Serialized]:     128
+  Avg Value Size [Deserialized]:   2832
+
+----------------------------------------------
+
+Region Summary
+--------------
+Region Name: error
+Region Type: Partitioned
+Region Size: 0
+Sample Size: 0
+
+Total Entry Size:                0
+Total Key Size:                  0
+Total Value Size [Serialized]:   0
+Total Value Size [Deserialized]: 0
+Avg Entry Size:                  0
+Avg Key Size:                    0
+Avg Value Size [Serialized]:     0
+Avg Value Size [Deserialized]:   0
+
+Largest Histogram Object Size:   0
+Largest Histogram:               
+null
+
+----------------------------------------------
+
+Region Detail - Member server1
+------------------------------
+  Region Name: error
+  Region Type: Partitioned
+  Region Size: 0
+  Sample Size: 0
+
+  Total Entry Size:                0
+  Total Key Size:                  0
+  Total Value Size [Serialized]:   0
+  Total Value Size [Deserialized]: 0
+  Avg Entry Size:                  0
+  Avg Key Size:                    0
+  Avg Value Size [Serialized]:     0
+  Avg Value Size [Deserialized]:   0
+
+----------------------------------------------
+
+Region Summary
+--------------
+Region Name: order_management
+Region Type: Partitioned
+Region Size: 1
+Sample Size: 1
+
+Total Entry Size:                320
+Total Key Size:                  16
+Total Value Size [Serialized]:   128
+Total Value Size [Deserialized]: 2832
+Avg Entry Size:                  320
+Avg Key Size:                    16
+Avg Value Size [Serialized]:     128
+Avg Value Size [Deserialized]:   2832
+
+
+Largest Histogram Object Size:   0
+Largest Histogram:               
+null
+
+----------------------------------------------
+
+Region Detail - Member server1
+------------------------------
+  Region Name: order_management
+  Region Type: Partitioned
+  Region Size: 1
+  Sample Size: 1
+
+  Total Entry Size:                320
+  Total Key Size:                  16
+  Total Value Size [Serialized]:   128
+  Total Value Size [Deserialized]: 2832
+  Avg Entry Size:                  320
+  Avg Key Size:                    16
+  Avg Value Size [Serialized]:     128
+  Avg Value Size [Deserialized]:   2832
+
+----------------------------------------------
+
+Region Summary
+--------------
+Region Name: update
+Region Type: Partitioned
+Region Size: 1
+Sample Size: 1
+
+Total Entry Size:                320
+Total Key Size:                  16
+Total Value Size [Serialized]:   124
+Total Value Size [Deserialized]: 2792
+Avg Entry Size:                  320
+Avg Key Size:                    16
+Avg Value Size [Serialized]:     124
+Avg Value Size [Deserialized]:   2792
+
+
+Largest Histogram Object Size:   0
+Largest Histogram:               
+null
+
+----------------------------------------------
+
+Region Detail - Member server1
+------------------------------
+  Region Name: update
+  Region Type: Partitioned
+  Region Size: 1
+  Sample Size: 1
+
+  Total Entry Size:                320
+  Total Key Size:                  16
+  Total Value Size [Serialized]:   124
+  Total Value Size [Deserialized]: 2792
+  Avg Entry Size:                  320
+  Avg Key Size:                    16
+  Avg Value Size [Serialized]:     124
+  Avg Value Size [Deserialized]:   2792
+
+----------------------------------------------
+

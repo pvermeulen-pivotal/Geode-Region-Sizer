@@ -1,0 +1,5 @@
+Region Name,Region Type,Number of Objects,Object Size,Key Size,Run Date
+order,Partitioned,1,128,80,Fri Sep 22 18:16:35 EDT 2017
+error,Partitioned,0,0,0,Fri Sep 22 18:17:25 EDT 2017
+order_management,Partitioned,1,128,16,Fri Sep 22 18:17:40 EDT 2017
+update,Partitioned,1,124,16,Fri Sep 22 18:17:54 EDT 2017

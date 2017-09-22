@@ -5,25 +5,24 @@
 	version="1.0" copy-on-read="true">
 
 	<pool name="pool" read-timeout="10000" retry-attempts="-1">
-		<locator host="" port="" />
-		<locator host="" port="" />
+		<locator host="RCPLT001" port="10000" />
 	</pool>
 
-	<pdx read-serialized="true" />
+	<pdx read-serialized="false" />
 
-	<region name="" refid="PROXY">
+	<region name="order" refid="PROXY">
 		<region-attributes pool-name="pool" />
 	</region>
 
-	<region name="" refid="PROXY">
+	<region name="order_management" refid="PROXY">
 		<region-attributes pool-name="pool" />
 	</region>
 
-	<region name="" refid="PROXY">
+	<region name="error" refid="PROXY">
 		<region-attributes pool-name="pool" />
 	</region>
 
-	<region name="" refid="PROXY">
+	<region name="update" refid="PROXY">
 		<region-attributes pool-name="pool" />
 	</region>
 
